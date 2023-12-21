@@ -1,0 +1,6 @@
+{
+    "gen": {
+        "proxy_ip:port": false,
+        "proxy_username:pass@ip:port": true
+    }
+}
