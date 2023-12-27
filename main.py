@@ -1,6 +1,4 @@
-import requests,threading,user_agent,uuid,random,json
-
-config = json.loads(open("config.json","r", encoding="utf8").read())
+import requests,threading,user_agent,uuid,random
 
 class NitroGenerator:
     def __init__(self):
@@ -8,30 +6,14 @@ class NitroGenerator:
         self.proxy_format = self.proxy()
 
     def proxy(self):
-        if config['gen']['proxy_ip:port'] == True:
-            proxy = open("proxy.txt","r").read().splitlines()
-            proxy_format = {
-                'http': 'http://' + random.choice(proxy),
-                'https': 'https://' + random.choice(proxy)
-            }
-            return proxy_format
-
-        elif config['gen']['proxy_username:pass@ip:port'] == True:
-            proxy_data = open('proxy.txt', 'r').read().splitlines()
-            selected_proxy = random.choice(proxy_data)
-            auth_data, server_data = selected_proxy.split('@')
-            username, password = auth_data.split(':')
-            server, port = server_data.split(':')
-            proxy_format = {
-                'http': f"http://{username}:{password}@{server}:{port}",
-                'https': f"http://{username}:{password}@{server}:{port}"
-            }
-            return proxy_format
-
-        else:
-            print("setup config.json")
-            return None
-
+        proxy_list = open("proxy.txt", "r").read().splitlines()
+        proxy = random.choice(proxy_list)
+        proxy_format = {
+            "http": f"http://{proxy}",
+            "https": f"http://{proxy}"
+        }
+        return proxy_format
+    
     def generate_nitro(self):
         try:
             headers = {
@@ -69,6 +51,5 @@ class NitroGenerator:
 
 if __name__ == "__main__":
     generator = NitroGenerator()
-    if generator.proxy_format is not None:
-        for i in range(100):
-            threading.Thread(target=generator.start).start()
+    for i in range(100):
+        threading.Thread(target=generator.start).start()
